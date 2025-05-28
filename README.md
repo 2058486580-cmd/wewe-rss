@@ -185,7 +185,9 @@ pnpm run start:server
 <a href="https://github.com/cooderl/wewe-rss/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=cooderl/wewe-rss" />
 </a>
-
+## 友情链接
+<img src="https://github.com/rachelos/we-mp-rss/raw/main/static/logo.svg" width="20"/>
+[We-Mp-Rss](https://github.com/rachelos/we-mp-rss)
 ## 📄 License
 
 [MIT](https://raw.githubusercontent.com/cooderl/wewe-rss/main/LICENSE) @cooderl
