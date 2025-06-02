@@ -1,6 +1,7 @@
 import { INestApplication, Injectable, Logger } from '@nestjs/common';
 import { z } from 'zod';
 import { TrpcService } from '@server/trpc/trpc.service';
+import { publicProcedure } from '@server/trpc/trpc.procedure';
 import * as trpcExpress from '@trpc/server/adapters/express';
 import { TRPCError } from '@trpc/server';
 import { PrismaService } from '@server/prisma/prisma.service';
@@ -358,6 +359,11 @@ export class TrpcRouter {
       .mutation(async ({ input: id }) => {
         await this.prismaService.article.delete({ where: { id } });
         return id;
+      }),
+    content: publicProcedure
+      .input(z.object({ id: z.string() }))
+      .query(async ({ input, ctx }) => {
+        return ctx.feedsService.getContentById(input.id);
       }),
   });
 

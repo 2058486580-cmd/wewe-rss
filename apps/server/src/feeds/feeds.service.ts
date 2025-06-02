@@ -340,4 +340,10 @@ export class FeedsService {
       await new Promise((resolve) => setTimeout(resolve, 30 * 1e3));
     }
   }
+
+  async getContentById(id: string): Promise<string | null> {
+    // Use the existing tryGetContent method to fetch the article content
+    const content = await this.tryGetContent(id);
+    return content;
+  }
 }
