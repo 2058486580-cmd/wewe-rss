@@ -5,7 +5,7 @@ services:
     image: mysql:8.3.0
     command: --mysql-native-password=ON
     environment:
-      # 请修改为自己的密码
+      # 369289
       MYSQL_ROOT_PASSWORD: 123456
       TZ: 'Asia/Shanghai'
       MYSQL_DATABASE: 'wewe-rss'
