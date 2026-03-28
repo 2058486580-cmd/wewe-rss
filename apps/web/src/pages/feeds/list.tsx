@@ -10,13 +10,23 @@ import {
   Button,
   Spinner,
   Link,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
 } from '@nextui-org/react';
 import { trpc } from '@web/utils/trpc';
 import dayjs from 'dayjs';
+import ArticleViewer from '@web/components/ArticleViewer';
 import { useParams } from 'react-router-dom';
 
+import { FC, useMemo, useState } from 'react';
 const ArticleList: FC = () => {
   const { id } = useParams();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedArticleId, setSelectedArticleId] = useState<string | null>(null);
 
   const mpId = id || '';
 
@@ -47,6 +57,10 @@ const ArticleList: FC = () => {
           table: 'min-h-[420px]',
         }}
         aria-label="文章列表"
+        onRowAction={(key) => {
+          setSelectedArticleId(key as string);
+          onOpen();
+        }}
         bottomContent={
           hasNextPage && !isLoading ? (
             <div className="flex w-full justify-center">
@@ -108,6 +122,23 @@ const ArticleList: FC = () => {
           )}
         </TableBody>
       </Table>
+      <Modal isOpen={isOpen} onClose={onClose} size="5xl" scrollBehavior="inside">
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Article</ModalHeader>
+              <ModalBody>
+                {selectedArticleId && <ArticleViewer articleId={selectedArticleId} />}
+              </ModalBody>
+              <ModalFooter>
+                <Button color="primary" onPress={onClose}>
+                  Close
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </div>
   );
 };
