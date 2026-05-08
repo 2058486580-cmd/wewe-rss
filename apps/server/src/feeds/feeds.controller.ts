@@ -11,16 +11,46 @@ import {
 } from '@nestjs/common';
 import { FeedsService } from './feeds.service';
 import { Response as Res, Request as Req } from 'express';
+import { PrismaService } from '@server/prisma/prisma.service';
 
 @Controller('feeds')
 export class FeedsController {
   private readonly logger = new Logger(this.constructor.name);
 
-  constructor(private readonly feedsService: FeedsService) {}
+  constructor(
+    private readonly feedsService: FeedsService,
+    private readonly prismaService: PrismaService,
+  ) {}
 
   @Get('/')
   async getFeedList() {
     return this.feedsService.getFeedList();
+  }
+
+  @Get('/authors')
+  async getAuthors() {
+    const feeds = await this.prismaService.feed.findMany({
+      select: {
+        id: true,
+        mpName: true,
+        mpIntro: true,
+        mpCover: true,
+        status: true,
+        syncTime: true,
+        updateTime: true,
+      },
+    });
+    return {
+      items: feeds.map((f) => ({
+        mp_id: f.id,
+        author_name: f.mpName,
+        intro: f.mpIntro,
+        cover: f.mpCover,
+        status: f.status,
+        sync_time: f.syncTime,
+        update_time: f.updateTime,
+      })),
+    };
   }
 
   @Get('/all.(json|rss|atom)')
