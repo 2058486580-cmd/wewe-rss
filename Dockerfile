@@ -1,9 +1,9 @@
-FROM node:22.16.0-alpine AS base
+FROM node:22.16.0-slim AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 
 RUN npm i -g pnpm@9
-
+RUN apt-get update && apt-get install -y openssl ca-certificates
 FROM base AS build
 COPY . /usr/src/app
 WORKDIR /usr/src/app
